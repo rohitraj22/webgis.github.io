@@ -58,7 +58,7 @@ body, html {
   font-size: 14px;
 }
 
-/* Hamburger Button (Mobile Only) */
+/* Hamburger Button */
 .menu-btn {
   display: none;
   position: fixed;
@@ -74,7 +74,7 @@ body, html {
   border-radius: 4px;
 }
 
-/* Close Button (Mobile Only) */
+/* Close Button */
 .close-btn {
   display: none;
   background: none;
@@ -87,7 +87,7 @@ body, html {
   color: #333;
 }
 
-/* Responsive Behavior (Mobile Only) */
+/* Responsive Behavior (Mobile only) */
 @media (max-width: 768px) {
   .container {
     flex-direction: column;
@@ -115,6 +115,9 @@ body, html {
 
   .menu-btn {
     display: block;
+    top: 20px;
+    left: 15px;
+    z-index: 1100;
   }
 
   .menu-btn.hidden {
@@ -123,5 +126,12 @@ body, html {
 
   .close-btn {
     display: block;
+  }
+
+  .leaflet-control-zoom {
+    right: 15px !important;
+    bottom: 60px !important;
+    left: auto !important;
+    top: auto !important;
   }
 }
