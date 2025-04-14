@@ -25,10 +25,12 @@ function getRandomPopulation() {
   return Math.floor(Math.random() * (50000000 - 5000000 + 1)) + 5000000;
 }
 function initMap() {
+  map = L.map("map", {
+    zoomControl: true
+  }).setView([22.5937, 78.9629], 5);
   if (window.innerWidth <= 768) {
-    map.zoomControl.setPosition('bottomright');
+    map.zoomControl.setPosition("bottomright");
   }
-  map = L.map("map").setView([22.5937, 78.9629], 5);
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution: "&copy; OpenStreetMap contributors"
   }).addTo(map);
@@ -52,24 +54,28 @@ function initMap() {
               layer.setStyle(hoverStyle);
             }
           });
-          layer.on("mouseout", function(){
+          layer.on("mouseout", function () {
             if (!highlightedState || highlightedState !== stateKey) {
               layer.setStyle(defaultStyle);
-            } 
-            else{
+            } else {
               layer.setStyle(highlightStyle);
             }
           });
         }
       }).addTo(map);
+
       updateSidebar();
       document.getElementById("loading").style.display = "none";
+      setTimeout(() => {
+        map.invalidateSize();
+      }, 300);
     })
     .catch(err => {
       console.error("Error loading GeoJSON:", err);
       document.getElementById("loading").innerText = "Error loading data!";
     });
 }
+
 function updateSidebar() {
   document.getElementById("total-states").innerText = stateData.length;
   const randomStates = stateData
@@ -120,6 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("clear-btn").addEventListener("click", clearSearch);
   initMap();
 });
+
 // Mobile Sidebar Toggle
 const menuBtn = document.getElementById("menu-toggle");
 const closeBtn = document.getElementById("close-sidebar");
@@ -127,11 +134,14 @@ const sidebar = document.getElementById("sidebar");
 menuBtn.addEventListener("click", () => {
   sidebar.classList.add("active");
   menuBtn.classList.add("hidden");
+  setTimeout(() => {
+    map.invalidateSize();
+  }, 300);
 });
-setTimeout(() => {
-  map.invalidateSize();
-}, 300);
 closeBtn.addEventListener("click", () => {
   sidebar.classList.remove("active");
   menuBtn.classList.remove("hidden");
+  setTimeout(() => {
+    map.invalidateSize();
+  }, 300);
 });
