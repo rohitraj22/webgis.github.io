@@ -128,6 +128,9 @@ menuBtn.addEventListener("click", () => {
   sidebar.classList.add("active");
   menuBtn.classList.add("hidden");
 });
+setTimeout(() => {
+  map.invalidateSize();
+}, 300);
 closeBtn.addEventListener("click", () => {
   sidebar.classList.remove("active");
   menuBtn.classList.remove("hidden");
