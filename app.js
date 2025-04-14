@@ -3,41 +3,33 @@ let geojsonLayer;
 let stateData = [];
 let stateLayers = {};
 let highlightedState = null;
-
 const defaultStyle = {
   color: "#3388ff",
   weight: 1,
   fillColor: "#3388ff",
   fillOpacity: 0.2
 };
-
 const highlightStyle = {
   color: "#ff0000",
   weight: 2,
   fillColor: "#ff6666",
   fillOpacity: 0.6
 };
-
 const hoverStyle = {
   weight: 2,
   color: "#ffa500",
   fillColor: "#ffcc80",
   fillOpacity: 0.7
 };
-
 function getRandomPopulation() {
   return Math.floor(Math.random() * (50000000 - 5000000 + 1)) + 5000000;
 }
-
 function initMap() {
   map = L.map("map").setView([22.5937, 78.9629], 5);
-
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution: "&copy; OpenStreetMap contributors"
   }).addTo(map);
-
   document.getElementById("loading").style.display = "block";
-
   fetch("data/india_states.geojson")
     .then(res => res.json())
     .then(data => {
@@ -49,16 +41,20 @@ function initMap() {
         style: defaultStyle,
         onEachFeature: function (feature, layer) {
           const stateName = feature.properties.NAME_1;
-          stateLayers[stateName.toLowerCase()] = layer;
+          const stateKey = stateName.toLowerCase();
+          stateLayers[stateKey] = layer;
           layer.bindPopup(stateName);
+
           layer.on("mouseover", function () {
-            if (!highlightedState || highlightedState !== stateName.toLowerCase()) {
+            if (!highlightedState || highlightedState !== stateKey) {
               layer.setStyle(hoverStyle);
             }
           });
           layer.on("mouseout", function () {
-            if (!highlightedState || highlightedState !== stateName.toLowerCase()) {
+            if (!highlightedState || highlightedState !== stateKey) {
               layer.setStyle(defaultStyle);
+            } else {
+              layer.setStyle(highlightStyle);
             }
           });
         }
@@ -71,7 +67,6 @@ function initMap() {
       document.getElementById("loading").innerText = "Error loading data!";
     });
 }
-
 function updateSidebar() {
   document.getElementById("total-states").innerText = stateData.length;
   const randomStates = stateData
@@ -85,7 +80,6 @@ function updateSidebar() {
     list.appendChild(li);
   });
 }
-
 function searchState() {
   const query = document.getElementById("search").value.toLowerCase();
   Object.values(stateLayers).forEach(layer => {
@@ -110,12 +104,9 @@ function searchState() {
       "<p>No matching state found.</p>";
   }
 }
-
 function clearSearch() {
   document.getElementById("search").value = "";
   document.getElementById("state-info").innerHTML = "";
-
-  // Reset all layers
   Object.values(stateLayers).forEach(layer => {
     layer.setStyle(defaultStyle);
   });
@@ -128,11 +119,15 @@ document.addEventListener("DOMContentLoaded", () => {
   initMap();
 });
 
-// Mobile only
-document.getElementById("menu-toggle").addEventListener("click", () => {
-  document.getElementById("sidebar").classList.add("active");
+// Mobile Sidebar Toggle
+const menuBtn = document.getElementById("menu-toggle");
+const closeBtn = document.getElementById("close-sidebar");
+const sidebar = document.getElementById("sidebar");
+menuBtn.addEventListener("click", () => {
+  sidebar.classList.add("active");
+  menuBtn.classList.add("hidden");
 });
-
-document.getElementById("close-sidebar").addEventListener("click", () => {
-  document.getElementById("sidebar").classList.remove("active");
+closeBtn.addEventListener("click", () => {
+  sidebar.classList.remove("active");
+  menuBtn.classList.remove("hidden");
 });
