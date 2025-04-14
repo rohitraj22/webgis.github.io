@@ -25,6 +25,9 @@ function getRandomPopulation() {
   return Math.floor(Math.random() * (50000000 - 5000000 + 1)) + 5000000;
 }
 function initMap() {
+  if (window.innerWidth <= 768) {
+    map.zoomControl.setPosition('bottomright');
+  }
   map = L.map("map").setView([22.5937, 78.9629], 5);
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution: "&copy; OpenStreetMap contributors"
@@ -44,16 +47,16 @@ function initMap() {
           const stateKey = stateName.toLowerCase();
           stateLayers[stateKey] = layer;
           layer.bindPopup(stateName);
-
           layer.on("mouseover", function () {
             if (!highlightedState || highlightedState !== stateKey) {
               layer.setStyle(hoverStyle);
             }
           });
-          layer.on("mouseout", function () {
+          layer.on("mouseout", function(){
             if (!highlightedState || highlightedState !== stateKey) {
               layer.setStyle(defaultStyle);
-            } else {
+            } 
+            else{
               layer.setStyle(highlightStyle);
             }
           });
@@ -112,13 +115,11 @@ function clearSearch() {
   });
   highlightedState = null;
 }
-
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("search-btn").addEventListener("click", searchState);
   document.getElementById("clear-btn").addEventListener("click", clearSearch);
   initMap();
 });
-
 // Mobile Sidebar Toggle
 const menuBtn = document.getElementById("menu-toggle");
 const closeBtn = document.getElementById("close-sidebar");
