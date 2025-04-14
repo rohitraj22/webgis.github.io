@@ -1,4 +1,4 @@
-# India WebGIS Dashboard 🌏
+# WebGIS Dashboard
 
 A lightweight WebGIS application displaying Indian state boundaries with stats and search using Leaflet.js.
 
