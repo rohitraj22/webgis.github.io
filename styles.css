@@ -1,4 +1,3 @@
-/* Reset & Base */
 body, html {
   margin: 0;
   padding: 0;
@@ -28,6 +27,7 @@ body, html {
   z-index: 1000;
 }
 
+/* Search Box */
 .search-box {
   margin-top: 10px;
 }
@@ -58,7 +58,7 @@ body, html {
   font-size: 14px;
 }
 
-/* Mobile Styles */
+/* Hamburger Button (Mobile Only) */
 .menu-btn {
   display: none;
   position: fixed;
@@ -74,6 +74,7 @@ body, html {
   border-radius: 4px;
 }
 
+/* Close Button (Mobile Only) */
 .close-btn {
   display: none;
   background: none;
@@ -86,7 +87,7 @@ body, html {
   color: #333;
 }
 
-/* Responsive Behavior (Mobile only) */
+/* Responsive Behavior (Mobile Only) */
 @media (max-width: 768px) {
   .container {
     flex-direction: column;
@@ -114,6 +115,10 @@ body, html {
 
   .menu-btn {
     display: block;
+  }
+
+  .menu-btn.hidden {
+    display: none;
   }
 
   .close-btn {
